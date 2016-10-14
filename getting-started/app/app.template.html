@@ -13,8 +13,10 @@
             <li class="placeholder">
                 <a data-type="all" href="#0">All</a>
             </li>
-            <li ngFor="let category in categories">
-                <a class="selected" href="#0">{{category.name}}</a>
+            <li *ngFor="let category of categories">
+                <a [class.selected]="category.selected" href="#0" 
+                    (click)="onCategorySelected(category)">
+                    {{category.name}}</a>
             </li>
             </ul>
         </div>
@@ -23,24 +25,29 @@
     <!--List of books-->
     <section class="gallery">
         <ul>
-            <li ngIf="let book of books"><img src="book.cover" click="clicked"/></li>
+            <li *ngFor="let book of books">
+                <img [src]="book.cover" (click)="clicked(book)"/>
+            </li>
         </ul>
     </section>
 
     <!--Sidebar navigation-->
     <div>
-        <div class="!navClosed ? 'filter filter-is-visible': 'filter'">
+        <div class="filter" [class.filter-is-visible]="!navClosed">
             <form>
             <div class="filter-block">
                 <h4>Search</h4>
                 <div class="filter-content">
-                <input type="search" placeholder="title, price..." change="search()"/>
+                <input [(ngModel)]="searchQuery" type="search" 
+                    placeholder="title, price..." 
+                    name="search"
+                    (keyup)="search()"/>
                 </div>
             </div>
             </form>
-            <a href="#0" class="close" onClick="toggleSideBar">Close</a>
+            <a href="#0" class="close" (click)="toggleSideBar()">Close</a>
         </div>
 
-        <a href="#0" class="filter-trigger" onClick="toggleSideBar">Filters</a>
+        <a href="#0" class="filter-trigger" (click)="toggleSideBar()">Filters</a>
     </div>
 </main>
